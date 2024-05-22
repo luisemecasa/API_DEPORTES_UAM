@@ -15,7 +15,7 @@ def get_db():
     finally:
         db.close()
 
-@router.post("/teams/", response_model=schemas.Team)
+@router.post("/teams/", response_model=schemas.Team, tags=["equipos"])
 def create_team(team: schemas.TeamCreate, current_user: schemas.Player = Depends(get_current_user), db: Session = Depends(get_db)):
     if current_user.id != team.captain_id:
         raise HTTPException(status_code=403, detail="Only the captain can create teams")
@@ -25,19 +25,19 @@ def create_team(team: schemas.TeamCreate, current_user: schemas.Player = Depends
     db.refresh(db_team)
     return db_team
 
-@router.get("/teams/", response_model=List[schemas.Team])
+@router.get("/teams/", response_model=List[schemas.Team], tags=["equipos"])
 def read_teams(db: Session = Depends(get_db)):
     teams = db.query(models.Team).all()
     return teams
 
-@router.get("/teams/{team_id}", response_model=schemas.Team)
+@router.get("/teams/{team_id}", response_model=schemas.Team, tags=["equipos"])
 def read_team(team_id: int, db: Session = Depends(get_db)):
     team = db.query(models.Team).filter(models.Team.id == team_id).first()
     if team is None:
         raise HTTPException(status_code=404, detail="Team not found")
     return team
 
-@router.put("/teams/{team_id}", response_model=schemas.Team)
+@router.put("/teams/{team_id}", response_model=schemas.Team, tags=["equipos"])
 def update_team(team_id: int, team: schemas.TeamCreate, current_user: schemas.Player = Depends(get_current_user), db: Session = Depends(get_db)):
     db_team = db.query(models.Team).filter(models.Team.id == team_id).first()
     if db_team is None:
@@ -49,7 +49,7 @@ def update_team(team_id: int, team: schemas.TeamCreate, current_user: schemas.Pl
     db.refresh(db_team)
     return db_team
 
-@router.delete("/teams/{team_id}", response_model=schemas.Team)
+@router.delete("/teams/{team_id}", response_model=schemas.Team, tags=["equipos"])
 def delete_team(team_id: int, current_user: schemas.Player = Depends(get_current_user), db: Session = Depends(get_db)):
     db_team = db.query(models.Team).filter(models.Team.id == team_id).first()
     if db_team is None:

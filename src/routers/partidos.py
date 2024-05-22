@@ -15,7 +15,7 @@ def get_db():
         db.close()
 
 
-@router.post("/matches/", response_model=schemas.Match)
+@router.post("/matches/", response_model=schemas.Match, tags=["partidos"])
 def create_match(match: schemas.MatchCreate, db: Session = Depends(get_db)):
     db_match = models.Match(**match.dict())
     db.add(db_match)
@@ -26,13 +26,13 @@ def create_match(match: schemas.MatchCreate, db: Session = Depends(get_db)):
 
 
 
-@router.get("/matches/", response_model=List[schemas.Match])
+@router.get("/matches/", response_model=List[schemas.Match], tags=["partidos"])
 def read_matches(db: Session = Depends(get_db)):
     matches = db.query(models.Match).all()
     return matches
 
 
-@router.get("/matches/{match_id}", response_model=schemas.Match)
+@router.get("/matches/{match_id}", response_model=schemas.Match, tags=["partidos"])
 def read_match(match_id: int, db: Session = Depends(get_db)):
     match = db.query(models.Match).filter(models.Match.id == match_id).first()
     if match is None:
@@ -40,7 +40,7 @@ def read_match(match_id: int, db: Session = Depends(get_db)):
     return match
 
 
-@router.put("/matches/{match_id}", response_model=schemas.Match)
+@router.put("/matches/{match_id}", response_model=schemas.Match, tags=["partidos"])
 def update_match(match_id: int, match: schemas.MatchCreate, db: Session = Depends(get_db)):
     db_match = db.query(models.Match).filter(models.Match.id == match_id).first()
     if db_match is None:
@@ -52,7 +52,7 @@ def update_match(match_id: int, match: schemas.MatchCreate, db: Session = Depend
     return db_match
 
 # Delete a match
-@router.delete("/matches/{match_id}", response_model=schemas.Match)
+@router.delete("/matches/{match_id}", response_model=schemas.Match, tags=["partidos"])
 def delete_match(match_id: int, db: Session = Depends(get_db)):
     db_match = db.query(models.Match).filter(models.Match.id == match_id).first()
     if db_match is None:

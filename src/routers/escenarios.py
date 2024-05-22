@@ -16,7 +16,7 @@ def get_db():
         db.close()
 
 # Create a new venue
-@router.post("/venues/", response_model=schemas.Venue)
+@router.post("/venues/", response_model=schemas.Venue, tags=["escenarios"])
 def create_venue(venue: schemas.VenueCreate, db: Session = Depends(get_db)):
     db_venue = models.Venue(**venue.dict())
     db.add(db_venue)
@@ -25,13 +25,13 @@ def create_venue(venue: schemas.VenueCreate, db: Session = Depends(get_db)):
     return db_venue
 
 # Get all venues
-@router.get("/venues/", response_model=List[schemas.Venue])
+@router.get("/venues/", response_model=List[schemas.Venue], tags=["escenarios"])
 def read_venues(db: Session = Depends(get_db)):
     venues = db.query(models.Venue).all()
     return venues
 
 # Get a specific venue by ID
-@router.get("/venues/{venue_id}", response_model=schemas.Venue)
+@router.get("/venues/{venue_id}", response_model=schemas.Venue, tags=["escenarios"])
 def read_venue(venue_id: int, db: Session = Depends(get_db)):
     venue = db.query(models.Venue).filter(models.Venue.id == venue_id).first()
     if venue is None:
@@ -39,7 +39,7 @@ def read_venue(venue_id: int, db: Session = Depends(get_db)):
     return venue
 
 # Update venue information
-@router.put("/venues/{venue_id}", response_model=schemas.Venue)
+@router.put("/venues/{venue_id}", response_model=schemas.Venue, tags=["escenarios"])
 def update_venue(venue_id: int, venue: schemas.VenueCreate, db: Session = Depends(get_db)):
     db_venue = db.query(models.Venue).filter(models.Venue.id == venue_id).first()
     if db_venue is None:
@@ -51,7 +51,7 @@ def update_venue(venue_id: int, venue: schemas.VenueCreate, db: Session = Depend
     return db_venue
 
 # Delete a venue
-@router.delete("/venues/{venue_id}", response_model=schemas.Venue)
+@router.delete("/venues/{venue_id}", response_model=schemas.Venue, tags=["escenarios"])
 def delete_venue(venue_id: int, db: Session = Depends(get_db)):
     db_venue = db.query(models.Venue).filter(models.Venue.id == venue_id).first()
     if db_venue is None:

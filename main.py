@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from src.routers import partidos,deportes,jugadores,equipos,escenarios,estadisticas
 from src.config.database import init_db
+from fastapi.security import HTTPBearer
 
 app = FastAPI()
 
@@ -19,6 +20,11 @@ app.include_router(jugadores.router, prefix="/players")
 app.include_router(equipos.router, prefix="/teams")
 app.include_router(escenarios.router, prefix="/scenarios")
 app.include_router(estadisticas.router, prefix="/statistics")
+
+
+security = HTTPBearer()
+
+app.openapi_schema = app.openapi()
 
 
 

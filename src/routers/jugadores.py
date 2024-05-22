@@ -8,7 +8,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 
 router = APIRouter()
 
-@router.post("/players/", response_model=schemas.Player)
+@router.post("/players/", response_model=schemas.Player, tags=["jugadores"])
 def create_player(player: schemas.PlayerCreate, db: Session = Depends(get_db)):
     db_player = db.query(models.Player).filter(models.Player.email == player.email).first()
     if db_player:
@@ -20,7 +20,7 @@ def create_player(player: schemas.PlayerCreate, db: Session = Depends(get_db)):
     db.refresh(db_player)
     return db_player
 
-@router.post("/token", response_model=schemas.Token)
+@router.post("/token", response_model=schemas.Token, tags=["jugadores"])
 def login_for_access_token(db: Session = Depends(get_db), form_data: OAuth2PasswordRequestForm = Depends()):
     user = db.query(models.Player).filter(models.Player.email == form_data.username).first()
     if not user or not verify_password(form_data.password, user.hashed_password):
@@ -32,6 +32,6 @@ def login_for_access_token(db: Session = Depends(get_db), form_data: OAuth2Passw
     access_token = create_access_token(data={"sub": str(user.id)})
     return {"access_token": access_token, "token_type": "bearer"}
 
-@router.get("/players/me/", response_model=schemas.Player)
+@router.get("/players/me/", response_model=schemas.Player, tags=["jugadores"])
 def read_players_me(current_user: schemas.Player = Depends(get_current_user)):
     return current_user

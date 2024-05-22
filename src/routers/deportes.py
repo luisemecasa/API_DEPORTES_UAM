@@ -16,7 +16,7 @@ def get_db():
         db.close()
 
 # Create a new sport
-@router.post("/sports/", response_model=schemas.Sport)
+@router.post("/sports/", response_model=schemas.Sport, tags=["deportes"])
 def create_sport(sport: schemas.SportCreate, db: Session = Depends(get_db)):
     db_sport = models.Sport(name=sport.name)
     db.add(db_sport)
@@ -25,13 +25,13 @@ def create_sport(sport: schemas.SportCreate, db: Session = Depends(get_db)):
     return db_sport
 
 # Get all sports
-@router.get("/sports/", response_model=List[schemas.Sport])
+@router.get("/sports/", response_model=List[schemas.Sport], tags=["deportes"])
 def read_sports(db: Session = Depends(get_db)):
     sports = db.query(models.Sport).all()
     return sports
 
 # Get a specific sport by ID
-@router.get("/sports/{sport_id}", response_model=schemas.Sport)
+@router.get("/sports/{sport_id}", response_model=schemas.Sport, tags=["deportes"])
 def read_sport(sport_id: int, db: Session = Depends(get_db)):
     sport = db.query(models.Sport).filter(models.Sport.id == sport_id).first()
     if sport is None:
@@ -39,7 +39,7 @@ def read_sport(sport_id: int, db: Session = Depends(get_db)):
     return sport
 
 # Update sport information
-@router.put("/sports/{sport_id}", response_model=schemas.Sport)
+@router.put("/sports/{sport_id}", response_model=schemas.Sport, tags=["deportes"])
 def update_sport(sport_id: int, sport: schemas.SportCreate, db: Session = Depends(get_db)):
     db_sport = db.query(models.Sport).filter(models.Sport.id == sport_id).first()
     if db_sport is None:
@@ -50,7 +50,7 @@ def update_sport(sport_id: int, sport: schemas.SportCreate, db: Session = Depend
     return db_sport
 
 # Delete a sport
-@router.delete("/sports/{sport_id}", response_model=schemas.Sport)
+@router.delete("/sports/{sport_id}", response_model=schemas.Sport, tags=["deportes"])
 def delete_sport(sport_id: int, db: Session = Depends(get_db)):
     db_sport = db.query(models.Sport).filter(models.Sport.id == sport_id).first()
     if db_sport is None:
