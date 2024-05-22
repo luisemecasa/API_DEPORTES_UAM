@@ -1,7 +1,6 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Table
+from sqlalchemy import Column, Integer, ForeignKey
 from sqlalchemy.orm import relationship
 from ..config.database import Base
-
 
 class Statistic(Base):
     __tablename__ = "statistics"
@@ -14,14 +13,3 @@ class Statistic(Base):
 
     player = relationship("Player", back_populates="statistics")
     match = relationship("Match", back_populates="statistics")
-
-
-team_players = Table('team_players', Base.metadata,
-    Column('team_id', Integer, ForeignKey('teams.id')),
-    Column('player_id', Integer, ForeignKey('players.id'))
-)
-
-
-
-
-

@@ -16,7 +16,7 @@ def get_db():
         db.close()
 
 # Create new statistics
-@router.post("/statistics/", response_model=schemas.Statistic)
+@router.post("/statistics/", response_model=schemas.Statistic, tags=["statistics"])
 def create_statistics(statistic: schemas.StatisticCreate, db: Session = Depends(get_db)):
     db_statistic = models.Statistic(**statistic.dict())
     db.add(db_statistic)
@@ -25,25 +25,25 @@ def create_statistics(statistic: schemas.StatisticCreate, db: Session = Depends(
     return db_statistic
 
 # Get all statistics
-@router.get("/statistics/", response_model=List[schemas.Statistic])
+@router.get("/statistics/", response_model=List[schemas.Statistic], tags=["statistics"])
 def read_statistics(db: Session = Depends(get_db)):
     statistics = db.query(models.Statistic).all()
     return statistics
 
 # Get statistics for a specific match
-@router.get("/statistics/match/{match_id}", response_model=List[schemas.Statistic])
+@router.get("/statistics/match/{match_id}", response_model=List[schemas.Statistic], tags= ["statistics"])
 def read_statistics_by_match(match_id: int, db: Session = Depends(get_db)):
     statistics = db.query(models.Statistic).filter(models.Statistic.match_id == match_id).all()
     return statistics
 
 # Get statistics for a specific player
-@router.get("/statistics/player/{player_id}", response_model=List[schemas.Statistic])
+@router.get("/statistics/player/{player_id}", response_model=List[schemas.Statistic], tags=["statistics"])
 def read_statistics_by_player(player_id: int, db: Session = Depends(get_db)):
     statistics = db.query(models.Statistic).filter(models.Statistic.player_id == player_id).all()
     return statistics
 
 # Update statistics
-@router.put("/statistics/{statistic_id}", response_model=schemas.Statistic)
+@router.put("/statistics/{statistic_id}", response_model=schemas.Statistic, tags=["statistics"])
 def update_statistics(statistic_id: int, statistic: schemas.StatisticCreate, db: Session = Depends(get_db)):
     db_statistic = db.query(models.Statistic).filter(models.Statistic.id == statistic_id).first()
     if db_statistic is None:
@@ -55,7 +55,7 @@ def update_statistics(statistic_id: int, statistic: schemas.StatisticCreate, db:
     return db_statistic
 
 # Delete statistics
-@router.delete("/statistics/{statistic_id}", response_model=schemas.Statistic)
+@router.delete("/statistics/{statistic_id}", response_model=schemas.Statistic, tags= ["statistics"])
 def delete_statistics(statistic_id: int, db: Session = Depends(get_db)):
     db_statistic = db.query(models.Statistic).filter(models.Statistic.id == statistic_id).first()
     if db_statistic is None:

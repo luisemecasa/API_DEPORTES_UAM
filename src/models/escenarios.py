@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
+from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
 from ..config.database import Base
 
@@ -8,6 +8,4 @@ class Venue(Base):
     name = Column(String, index=True)
     location = Column(String)
     
-    
-
-Venue.matches = relationship("Match", back_populates="venue")
+    matches = relationship("Match", back_populates="venue")

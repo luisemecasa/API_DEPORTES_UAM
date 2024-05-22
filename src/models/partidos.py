@@ -17,5 +17,4 @@ class Match(Base):
     team_a = relationship("Team", foreign_keys=[team_a_id])
     team_b = relationship("Team", foreign_keys=[team_b_id])
     sport = relationship("Sport", back_populates="matches")
-    
-Match.statistics = relationship("Statistic", back_populates="match")
+    statistics = relationship("Statistic", back_populates="match")

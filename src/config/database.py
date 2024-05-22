@@ -27,5 +27,5 @@ def get_db():
 
 
 def init_db():
-    from ..models import models  
+    from ..models import jugadores, deportes, equipos, escenarios, estadisticas, partidos
     Base.metadata.create_all(bind=engine)

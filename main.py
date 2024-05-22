@@ -1,5 +1,4 @@
 from fastapi import FastAPI
-from src.middlewares import auth
 from src.routers import partidos,deportes,jugadores,equipos,escenarios,estadisticas
 from src.config.database import init_db
 
@@ -14,7 +13,6 @@ app.contact = {
 }
 
 
-app.add_middleware(auth)
 app.include_router(partidos.router, prefix="/matches")
 app.include_router(deportes.router, prefix="/sports")
 app.include_router(jugadores.router, prefix="/players")
