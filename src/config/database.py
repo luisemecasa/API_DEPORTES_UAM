@@ -6,7 +6,6 @@ database_url = "sqlite:///./database.sqlite"
 
 engine = create_engine(
     database_url, 
-    native_datetime=True,
     connect_args={"check_same_thread": False}
 )
 
@@ -19,5 +18,5 @@ SessionLocal = sessionmaker(
 Base = declarative_base()
 
 def init_db():
-    import src.models 
+    from ..models import models  
     Base.metadata.create_all(bind=engine)

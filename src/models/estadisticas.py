@@ -1,0 +1,27 @@
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Table
+from sqlalchemy.orm import relationship
+from ..config.database import Base
+
+
+class Statistic(Base):
+    __tablename__ = "statistics"
+    id = Column(Integer, primary_key=True, index=True)
+    player_id = Column(Integer, ForeignKey('players.id'))
+    match_id = Column(Integer, ForeignKey('matches.id'))
+    points = Column(Integer)
+    assists = Column(Integer)
+    rebounds = Column(Integer)
+
+    player = relationship("Player", back_populates="statistics")
+    match = relationship("Match", back_populates="statistics")
+
+
+team_players = Table('team_players', Base.metadata,
+    Column('team_id', Integer, ForeignKey('teams.id')),
+    Column('player_id', Integer, ForeignKey('players.id'))
+)
+
+
+
+
+
