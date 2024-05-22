@@ -1,6 +1,5 @@
 from pydantic import BaseModel
-from typing import List, Optional
-from datetime import datetime
+from typing import Optional
 
 class PlayerBase(BaseModel):
     name: str
@@ -12,4 +11,11 @@ class PlayerCreate(PlayerBase):
 class Player(PlayerBase):
     id: int
     class Config:
-        orm_mode = True
+        from_attributes: True
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+class TokenData(BaseModel):
+    username: Optional[str] = None

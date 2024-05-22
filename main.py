@@ -26,4 +26,4 @@ app.include_router(estadisticas.router, prefix="/statistics")
 
 @app.on_event("startup")
 def on_startup():
-    init_db()  # Inicializa la base de datos aquí
+    init_db()  

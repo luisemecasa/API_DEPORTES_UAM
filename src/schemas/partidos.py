@@ -17,4 +17,4 @@ class MatchCreate(MatchBase):
 class Match(MatchBase):
     id: int
     class Config:
-        orm_mode = True
+        from_attributes = True

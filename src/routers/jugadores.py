@@ -2,22 +2,15 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from ..schemas import jugadores as schemas
 from ..models import jugadores as models
-from ..config import database 
+from ..config.database import get_db
 from ..middlewares.auth import get_current_user, get_password_hash, verify_password, create_access_token
 from fastapi.security import OAuth2PasswordRequestForm
 
 router = APIRouter()
 
-def get_db():
-    db = database.SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
 @router.post("/players/", response_model=schemas.Player)
 def create_player(player: schemas.PlayerCreate, db: Session = Depends(get_db)):
-    db_player = db.query(models.Player).filter(models.Player == player.email).first()
+    db_player = db.query(models.Player).filter(models.Player.email == player.email).first()
     if db_player:
         raise HTTPException(status_code=400, detail="Email already registered")
     hashed_password = get_password_hash(player.password)
